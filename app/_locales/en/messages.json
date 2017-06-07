@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Prometheus Fact Checker",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "A proof-of-concept fact checker using prometheus",
+    "description": "The description of the application"
+  }
+}
