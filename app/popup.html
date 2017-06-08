@@ -9,14 +9,19 @@
     <!-- build:css styles/main.css -->
     <link href="styles/main.css" rel="stylesheet">
     <!-- endbuild -->
+    <link href="libs/semantic.min.css" rel="stylesheet">
     <script src="libs/jquery-3.2.1.min.js"></script>
+    <script src="libs/semantic.min.js"></script>
   </head>
-  <body>
-    <h1>Prometheus</h1>
-
-
-    <button id="checkPage">Check Page</button>
-    <p id="result"></p>
+  <body style="width: 600px;" >
+    <div class="ui container">
+      <h1>Prometheus</h1>
+      <div class="ui fluid container">
+        <div id="result" class="ui divided items">
+          No results
+        </div>
+      </div>
+    </div>
 
     <!-- build:js scripts/popup-vendor.js -->
     <!-- bower:js -->
