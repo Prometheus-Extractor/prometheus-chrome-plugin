@@ -3,15 +3,15 @@
 function queryPrometheus(url) {
   $.ajax({
     method: 'POST',
-    url: 'localhost:8080/check',
+    url: 'http://localhost:8081/check',
     data: { url: url}
   })
   .done((msg) => {
-    document.getElementById('result').innerHTML = 'Got answer ' + msg;
+    showResult(msg);
     console.log(msg);
   })
   .fail((msg) => {
-    document.getElementById('result').innerHTML = 'Got answer ' + msg;
+    document.getElementById('result').innerHTML = 'Error while checking with Prometheus';
     console.log(msg);
   });
 }
@@ -64,58 +64,6 @@ function showResult(data) {
   $('.ui.accordion').accordion();
 }
 
-showResult([
-  {
-    'subject': {
-      'name': 'Barack Obama',
-      'link': 'https://www.wikidata.org/wiki/Q76'
-    },
-    'predicate': {
-      'name': 'Married',
-      'link': 'https://www.wikidata.org/wiki/Property:P26'
-    },
-    'object': {
-      'name': 'Michelle Obama',
-      'link': 'https://www.wikidata.org/wiki/Q13133'
-    },
-    'sentences': [
-      'Barack married his wife Michelle'
-    ],
-    'type': 'verified',
-    'evidence': [{
-      'source': 'Wikipedia',
-      'link': 'http://en.wikipedia.org/wiki/Obama',
-      'snippet': 'Obama married Michelle.'
-    }]
-  },
-  {
-    'subject': {
-      'name': 'Barack Obama',
-      'link': 'https://www.wikidata.org/wiki/Q76'
-    },
-    'predicate': {
-      'name': 'Married',
-      'link': 'https://www.wikidata.org/wiki/Property:P26'
-    },
-    'object': {
-      'name': 'Donald Trump',
-      'link': 'https://www.wikidata.org/wiki/Q13133'
-    },
-    'sentences': [
-      'Barack married his wife Michelle'
-    ],
-    'type': 'conflicting',
-    'evidence': [{
-      'source': 'Wikipedia',
-      'link': 'http://en.wikipedia.org/wiki/Obama',
-      'snippet': 'Obama married Michelle.'
-    }]
-  }
-]);
-
-$('#checkPage').on('click', () => {
-  chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
-    document.getElementById('result').innerHTML = 'Checking... ' + tabs[0].url;
-    queryPrometheus(tabs[0].url);
-  });
+chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
+  queryPrometheus(tabs[0].url);
 });
