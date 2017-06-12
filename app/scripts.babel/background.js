@@ -2,7 +2,7 @@
 
 factCache = {};
 
-function queryPrometheus(url, port) {
+function queryPrometheus(url, port, tabId) {
   if(factCache.hasOwnProperty(url)) {
     if(port){
         port.postMessage({url: url, data: factCache[url]});
@@ -22,6 +22,9 @@ function queryPrometheus(url, port) {
     if(port){
         port.postMessage({url: url, data: factCache[url]});
     }
+    if(tabId) {
+      chrome.browserAction.setBadgeText({'text': '!!!', 'tabId': tabId});
+    }
   })
   .fail((msg) => {
     factCache[url] = false;
@@ -34,14 +37,13 @@ function queryPrometheus(url, port) {
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status == 'complete' && tab.active) {
-    queryPrometheus(tab.url, null);
-    chrome.browserAction.setBadgeText({'text': '!!!', 'tabId': tabId});
+    queryPrometheus(tab.url, null, tabId);
   }
 })
 
 chrome.extension.onConnect.addListener((port) => {
   console.log('Connected to popup.');
   port.onMessage.addListener(function(msg) {
-    queryPrometheus(msg, port);
+    queryPrometheus(msg, port, null);
   });
 })
