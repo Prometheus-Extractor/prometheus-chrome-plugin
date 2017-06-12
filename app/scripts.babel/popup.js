@@ -11,7 +11,17 @@ function queryPrometheus(url) {
     console.log(msg);
   })
   .fail((msg) => {
-    document.getElementById('result').innerHTML = 'Error while checking with Prometheus';
+    var errorMsg = '<div class="ui error message">' +
+  '<div class="header">' +
+    'Error while checking with Prometheus' +
+  '</div>' +
+  '<ul class="list">' +
+    '<li>Check your internet</li>' +
+    '<li>Wait 5 min</li>' +
+    '<li>Try again</li>' +
+    '</ul>' +
+  '</div>';
+    document.getElementById('result').innerHTML = errorMsg;
     console.log(msg);
   });
 }
