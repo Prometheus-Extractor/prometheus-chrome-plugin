@@ -1,16 +1,8 @@
 'use strict';
 
-function queryPrometheus(url) {
-  $.ajax({
-    method: 'POST',
-    url: 'http://prometheus-checker.duckdns.org:8081/check',
-    data: { url: url}
-  })
-  .done((msg) => {
-    showResult(msg);
-    console.log(msg);
-  })
-  .fail((msg) => {
+function showResult(data) {
+
+  if(data === false) {
     var errorMsg = '<div class="ui error message">' +
   '<div class="header">' +
     'Error while checking with Prometheus' +
@@ -21,12 +13,11 @@ function queryPrometheus(url) {
     '<li>Try again</li>' +
     '</ul>' +
   '</div>';
-    document.getElementById('result').innerHTML = errorMsg;
-    console.log(msg);
-  });
-}
+    $('#result').html(errorMsg);
+    chrome.browserAction.setBadgeText({'text': 'ERR!'});
+    return;
+  }
 
-function showResult(data) {
   var items = '';
   for(var item of data) {
 
@@ -70,10 +61,21 @@ function showResult(data) {
             '</div>' +
             '</div>';
   }
+
   $('#result').html(items);
   $('.ui.accordion').accordion();
+  chrome.browserAction.setBadgeText({'text': '' + data.length});
 }
 
+var port = chrome.extension.connect({
+     name: 'Prometheus Fact-Checker'
+});
+
+port.onMessage.addListener(function(msg) {
+     console.log('Message recieved', msg);
+     showResult(msg['data']);
+});
+
 chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
-  queryPrometheus(tabs[0].url);
+  port.postMessage(tabs[0].url);
 });
