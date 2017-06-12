@@ -23,7 +23,7 @@ function queryPrometheus(url, port, tabId) {
         port.postMessage({url: url, data: factCache[url]});
     }
     if(tabId) {
-      chrome.browserAction.setBadgeText({'text': '!!!', 'tabId': tabId});
+      chrome.browserAction.setBadgeText({'text': '!', 'tabId': tabId});
     }
   })
   .fail((msg) => {
