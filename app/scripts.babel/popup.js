@@ -53,7 +53,7 @@ function showResult(data) {
               '<div class="extra">' +
               '<p>Sources: ';
     for(var e of item.evidence){
-      items += '<a href="' + e.link + '" target="_blank">' + e.source + '(' + Math.round(e.probability * 100) / 100 + ')</a> ';
+      items += '<a href="' + e.link + '" target="_blank">' + e.source + ' (' + Math.round(e.probability * 100) / 100 + '): ' + e.object + '</a> ';
     }
       items += '</p>' +
             '</div>' +
