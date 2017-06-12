@@ -14,7 +14,6 @@ function showResult(data) {
     '</ul>' +
   '</div>';
     $('#result').html(errorMsg);
-    chrome.browserAction.setBadgeText({'text': 'ERR!'});
     return;
   }
 
@@ -64,7 +63,6 @@ function showResult(data) {
 
   $('#result').html(items);
   $('.ui.accordion').accordion();
-  chrome.browserAction.setBadgeText({'text': '' + data.length});
 }
 
 var port = chrome.extension.connect({

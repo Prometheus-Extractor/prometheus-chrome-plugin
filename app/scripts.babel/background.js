@@ -35,6 +35,7 @@ function queryPrometheus(url, port) {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status == 'complete' && tab.active) {
     queryPrometheus(tab.url, null);
+    chrome.browserAction.setBadgeText({'text': '!!!', 'tabId': tabId});
   }
 })
 
