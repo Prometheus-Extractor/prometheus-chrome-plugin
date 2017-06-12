@@ -3,7 +3,7 @@
 function queryPrometheus(url) {
   $.ajax({
     method: 'POST',
-    url: 'http://localhost:8081/check',
+    url: 'http://prometheus-checker.duckdns.org:8081/check',
     data: { url: url}
   })
   .done((msg) => {
