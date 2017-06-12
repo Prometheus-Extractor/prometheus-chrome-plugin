@@ -27,10 +27,9 @@ function queryPrometheus(url, port, tabId) {
     }
   })
   .fail((msg) => {
-    factCache[url] = false;
     console.log(msg);
     if(port){
-        port.postMessage({url: url, data: factCache[url]});
+        port.postMessage({url: url, data: false});
     }
   });
 }
