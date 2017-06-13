@@ -5,11 +5,19 @@ factCache = {};
 function queryPrometheus(url, port, tabId) {
   if(factCache.hasOwnProperty(url)) {
     if(port){
-        port.postMessage({url: url, data: factCache[url]});
+        var fact = factCache[url];
+        if(fact === true) {
+          setTimeout(function(){
+            queryPrometheus(url, port, tabId);
+          }, 500);
+        }else{
+          port.postMessage({url: url, data: factCache[url]});
+        }
     }
     return;
   }
 
+  factCache[url] = true; // Signal that the fact is currently being checked.
   console.log('Querying Prometheus for: ' + url);
   $.ajax({
     method: 'POST',
@@ -23,26 +31,27 @@ function queryPrometheus(url, port, tabId) {
         port.postMessage({url: url, data: factCache[url]});
     }
     if(tabId) {
-      chrome.browserAction.setBadgeText({'text': '!', 'tabId': tabId});
+        chrome.browserAction.setBadgeText({'text': '!', 'tabId': tabId});
     }
   })
   .fail((msg) => {
+    delete factCache[url];
     console.log(msg);
     if(port){
-        port.postMessage({url: url, data: false});
+        port.postMessage({url: url, data: factCache[url]});
     }
   });
 }
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status == 'complete' && tab.active) {
-    queryPrometheus(tab.url, null, tabId);
+      queryPrometheus(tab.url, null, tabId);
   }
 })
 
 chrome.extension.onConnect.addListener((port) => {
-  console.log('Connected to popup.');
-  port.onMessage.addListener(function(msg) {
-    queryPrometheus(msg, port, null);
-  });
+    console.log('Connected to popup.');
+    port.onMessage.addListener(function(msg) {
+        queryPrometheus(msg, port, null);
+    });
 })
