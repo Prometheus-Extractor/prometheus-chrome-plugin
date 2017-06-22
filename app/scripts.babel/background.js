@@ -1,5 +1,6 @@
 'use strict';
 
+PROMETHEUS_URL = 'http://prometheus-checker.duckdns.org:8081/check'
 factCache = {};
 
 function queryPrometheus(url, port, tabId) {
@@ -21,7 +22,7 @@ function queryPrometheus(url, port, tabId) {
   console.log('Querying Prometheus for: ' + url);
   $.ajax({
     method: 'POST',
-    url: 'http://prometheus-checker.duckdns.org:8081/check',
+    url: PROMETHEUS_URL,
     data: {url: url}
   })
   .done((msg) => {
