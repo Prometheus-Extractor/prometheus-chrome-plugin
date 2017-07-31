@@ -2,7 +2,7 @@
 
 function showResult(data) {
 
-  if(data === false) {
+  if(data === undefined || data == null || data === false) {
     var errorMsg = '<div class="ui error message">' +
   '<div class="header">' +
     'Error while checking with Prometheus' +
