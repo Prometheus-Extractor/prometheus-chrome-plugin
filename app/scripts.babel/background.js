@@ -1,6 +1,7 @@
 'use strict';
 
-PROMETHEUS_URL = 'http://prometheus-checker.duckdns.org:8081/check'
+// Change the URL below to point to your Prometheus Fact Checkin instance.
+PROMETHEUS_URL = 'http://127.0.0.1:8081/check'
 factCache = {};
 
 function queryPrometheus(url, port, tabId) {
